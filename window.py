@@ -21,6 +21,8 @@ class Pencere(QMainWindow, Ui_modbus.Ui_MainWindow):
             '192.168.1.1', 700)
         self.modbusClient = modbus_client
         try:
+            if modbus_client.is_connected :
+                modbus_client.close()
             modbus_client.connect()
         except Error:
             msg = QMessageBox()
