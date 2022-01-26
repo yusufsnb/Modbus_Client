@@ -1,7 +1,9 @@
+from email.charset import QP
 from msilib.schema import Error
 from operator import mod
 from tkinter import E
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
+from PyQt5.QtGui import QPalette
 import Ui_modbus
 import easymodbus.modbusClient
 
@@ -15,6 +17,7 @@ class Pencere(QMainWindow, Ui_modbus.Ui_MainWindow):
         self.btnWrite.clicked.connect(self.writeDataToPLC)
         self.txtRead.setReadOnly(True)
         self.msg = QMessageBox()
+        self.isConnected
 
     def connectToPLC(self):
         self.ip = self.txtIpv1.text() + '.' + self.txtIpv2.text() + \
@@ -58,3 +61,11 @@ class Pencere(QMainWindow, Ui_modbus.Ui_MainWindow):
             input_registers = self.modbusClient.read_holdingregisters(
                 int(self.comRead.currentText()), 1)
             self.txtRead.setText(str(input_registers[0]))
+
+    def isConnected(self):
+        if self.modbusClient.is_connected():
+            self.btnConnected.setStyleSheet(
+                "background-color: red;border-radius:1px;border-width:1px")
+        else:
+            self.btnConnected.setStyleSheet(
+                "background-color: green;border-radius:1px;border-width:1px")
